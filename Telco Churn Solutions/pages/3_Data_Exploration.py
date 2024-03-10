@@ -1,7 +1,7 @@
 import streamlit as st
 
 import matplotlib.pyplot as plt
-from data_frame import df_churn, series_nan
+from utilities import df_churn, series_nan
 
 varOptions = [None] + df_churn.columns.to_list()
 

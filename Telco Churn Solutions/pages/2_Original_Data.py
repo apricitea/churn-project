@@ -1,6 +1,6 @@
 import streamlit as st
 
-from data_frame import df_churn
+from utilities import df_churn
 
 def select(data, by, condition, exactMatchBool):
 	refColumn = df_churn[by].astype(str)
