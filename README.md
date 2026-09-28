@@ -49,3 +49,15 @@ Python · scikit-learn · XGBoost · SHAP · pandas · Streamlit
 poetry install
 streamlit run "Telco Churn Solutions/Home.py"
 ```
+
+---
+
+## Data provenance
+
+`Telco Churn Solutions/Telco_customer_churn_adapted_v2.xlsx` derives from the IBM Telco
+Customer Churn sample dataset, which IBM distributes publicly for educational use and which
+is also mirrored on Kaggle.
+
+The dataset is **not our work** and we assert no licence over it. It is committed so that
+the notebook and dashboard reproduce without a download step. The modelling, the IPTW
+causal layer and the Streamlit application are our own work (MIT).
