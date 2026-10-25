@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this work, cite it as below."
+type: software
+title: "Telco churn: prediction with SHAP and a propensity-score causal layer"
+authors:
+  - family-names: Nataputra
+    given-names: Alvin Christian
+    website: https://apricitea.github.io
+  - family-names: S.
+    given-names: Muhammad Ammar
+    website: https://github.com/mammarstpc
+  - family-names: H.
+    given-names: Perisai Zidane
+    website: https://github.com/pzidaneh
+repository-code: "https://github.com/apricitea/churn-project"
+url: "https://apricitea.github.io"
+license: MIT
+version: "1.1.0"
+date-released: "2026-10-25"
+abstract: >-
+  XGBoost churn prediction with SHAP attributions, plus an inverse-probability-of-treatment
+  weighted estimate of what product adoption does to churn, monthly purchase and CLTV,
+  reported with covariate-balance diagnostics, effective sample size, a positivity check
+  and a propensity-matched cross-check.
