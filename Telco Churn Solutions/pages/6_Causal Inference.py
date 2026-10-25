@@ -1,81 +1,94 @@
+"""Product performance page, driven by the committed causal run rather than constants."""
+
 import streamlit as st
-from PIL import Image
+
+from causal_results import effect, excludes_zero, format_effect, load_latest
 
 st.write("## Product performance evaluation")
 
-product_options = ['Video', 'MyApp', 'Call Center']
-product_option = st.selectbox("Product to evalaute: ", product_options)
+run = load_latest()
+if run is None:
+    st.error(
+        "No causal run found. Generate one with `python causal/run.py --n-boot 400` "
+        "from the repository root; the page reads `causal/out/<run_id>/results.json`."
+    )
+    st.stop()
+
+assert run is not None  # st.stop() halts the script; this narrows the type for readers
+
+product_options = ["Video", "MyApp", "Call Center"]
+product_option = st.selectbox("Product to evaluate:", product_options)
 
 segment = ""
-
-# If call center, option to evaluate for video and MyApp Users.
 if product_option == "Call Center":
-    video_users = st.checkbox("Evaluate for video and MyApp Users")
-    if video_users:
-        segment = " for video and MyApp Users"
+    if st.checkbox("Evaluate for video and MyApp users"):
+        segment = " (video and MyApp users only — the committed run does not yet split this segment)"
 
-def effectdirection(value):
-    if value > 0:
-        return "increase"
-    else:
-        return "decrease"
+churn = effect(run, product_option, "churn")
+purchase = effect(run, product_option, "monthly_purchase")
+cltv = effect(run, product_option, "cltv")
 
-churn_effects = {'Call Center': -0.108, 'Video': 0.060, 'MyApp' : 0.083}
-abs_churn_effect = {key: abs(val)*100 for key, val in churn_effects.items()}
-direction_churn_effect = {key: effectdirection(val) for key, val in churn_effects.items()}
-
-income_effects = {'Call Center': 6.079, 'Video' : 13.923, 'MyApp' : 19.449}
-abs_income_effect = {key: abs(val) for key, val in income_effects.items()}
-direction_income_effect = {key: effectdirection(val) for key, val in income_effects.items()}
-
-cltv_effects = {'Call Center': 36.321, 'Video' : -72.680, 'MyApp' : -82.828}
-abs_cltv_effect = {key: abs(val) for key, val in cltv_effects.items()}
-direction_cltv_effect = {key: effectdirection(val) for key, val in cltv_effects.items()}
-
-certainty = {'Call Center' : '', 'Video': '**However, we are uncertain about this.**', 'MyApp' : '**However, we are uncertain about this.**'}
-
-image_dict = {
-    "Video": "Telco Churn Solutions/images/video_cltv.jpg",
-    "MyApp": "Telco Churn Solutions/images/myapp_cltv.jpg"
-}
-
-confint_abs_start = {
-    "Video" : 105.27111976998874,
-    "MyApp" : 127.38443608519567 
-}
-
-confint_abs_end = {
-    "Video" : 146.6804542353386,
-    "MyApp" : 80.01620595755293 
-}
-
+st.markdown(f"### Estimates for **{product_option}**{segment}")
 st.markdown(
-f"""
-Here's what we know about the performance of **{product_option}{segment}**:
-- If a non-user switches to using {product_option}, we can expect a **{abs_churn_effect[product_option]}% {direction_churn_effect[product_option]} in churn** on average.
-- If a non-user switches to using {product_option}, we can expect a **Rp{abs_income_effect[product_option]:.3f},00 {direction_income_effect[product_option]} in monthly purchase** on average.
-- If a non-user switches to using {product_option}, we can expect a **Rp{abs_cltv_effect[product_option]:.3f},00 {direction_cltv_effect[product_option]} in CLTV** on average. {certainty[product_option]}
+    f"""
+- Churn: **{format_effect(product_option, 'churn', churn['iptw'])}**
+- Monthly purchase: **{format_effect(product_option, 'monthly_purchase', purchase['iptw'])}**
+- CLTV: **{format_effect(product_option, 'cltv', cltv['iptw'])}**
 """
 )
 
-if product_option == "Video" or product_option == "MyApp":
-    show_uncertainty = st.checkbox("Visualise uncertainty in the CLTV effect")
-    if show_uncertainty:
-        st.write("### Effect uncertainty")
-        st.write(f"Here is the interval of estimates for the effect of {product_option} on CLTV:")
-        confint = Image.open(image_dict[product_option])
-        st.image(confint, caption=f"Effect estimate interval for {product_option}")
-        st.markdown(f"""The estimated effect of {product_option} on CLTV ranges from a **Rp{confint_abs_start[product_option]:.3f},00 decrease** to a **Rp{confint_abs_end[product_option]:.3f},00 increase**. There are estimates that show a decrease in CLTV, no effect, and an increase in CLTV. **Thus, we are not certain of {product_option}'s effect on CLTV**.""")
+st.caption(
+    f"Run {run['run_id']}: {run['dataset_rows']} internet-subscribing customers. "
+    "Inverse-probability-of-treatment weighting with stabilised weights; intervals are "
+    "percentile bootstraps that refit the propensity model in every resample."
+)
 
-st.write("### Recommendations")
-if product_option == "Call Center":
-    st.write(f"{product_option} both reduces churn and increases monthly purchases. It has an overall positive effect on CLTV. **More customers should be pushed into using it**.")
-else:
-    st.markdown(
-    f"""
-    {product_option} has a trade-off: it increases monthly purchases, but at the cost of increased churn. We are not sure how these two components affect CLTV overall. We should:
-    1. Investigate if there are any bugs in the product.
-    2. Conduct discussions with users to see if they have a positive experience using that product
-    3. If the product as it stands doesn't increase CLTV for all customers, find a segment where it does it increase CLTV.
-    """
+block = run["treatments"][
+    {"Call Center": "Call Center_Yes", "Video": "Video Product_Yes", "MyApp": "Use MyApp_Yes"}[
+        product_option
+    ]
+]
+st.markdown("#### Covariate balance")
+left, middle, right = st.columns(3)
+left.metric("Max |SMD| before weighting", f"{block['max_abs_smd_before']:.2f}")
+middle.metric("Max |SMD| after weighting", f"{block['max_abs_smd_after']:.2f}")
+right.metric("Effective sample size", f"{block['effective_sample_size']:.0f} / {block['n']}")
+st.caption(
+    "The 0.1 rule of thumb is a reporting convention, not a pass/fail test. "
+    f"{block['n_covariates_unbalanced_before']} covariates exceeded it before weighting; "
+    f"{block['n_covariates_unbalanced_after']} do after."
+)
+
+st.markdown("#### Recommendations")
+if not excludes_zero(churn["iptw"]):
+    st.write(
+        f"The churn effect of {product_option} is **not distinguishable from zero** at this "
+        "sample size, so no adoption push is justified on churn grounds alone."
     )
+elif churn["iptw"]["point"] < 0:
+    if excludes_zero(cltv["iptw"]) and cltv["iptw"]["point"] > 0:
+        st.write(
+            f"{product_option} **reduces churn and raises CLTV**, with both intervals excluding "
+            "zero. Pushing adoption is supported by the data."
+        )
+    else:
+        st.write(
+            f"{product_option} **reduces churn**, but the CLTV interval includes zero — the "
+            "retention benefit is real while the lifetime-value benefit is not established. "
+            "Treat it as a retention play, not a revenue one."
+        )
+else:
+    if excludes_zero(purchase["iptw"]) and purchase["iptw"]["point"] > 0:
+        st.write(
+            f"{product_option} **raises churn** while raising monthly purchase: a revenue/"
+            "retention trade-off. Before scaling it, check whether the product has a defect "
+            "or a segment where CLTV rises."
+        )
+    else:
+        st.write(f"{product_option} raises churn without a established revenue benefit.")
+
+st.caption(
+    "Exchangeability is assumed: no unmeasured confounder (price, contract type, service "
+    "quality) is adjusted for. These are association-under-assumption estimates, not "
+    "guaranteed intervention effects."
+)

@@ -21,6 +21,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
 
 from analysis import (  # noqa: E402
     OUTCOMES,
@@ -138,7 +139,7 @@ def main() -> None:
         balance_rows_all.extend(
             {"treatment": treatment, **row} for row in treatment_block["balance"]
         )
-        love_plot(treatment_block["balance"], out / f"love_{treatment.split('_')[0].lower()}.png", treatment)
+        love_plot(treatment_block["balance"], out / f"love_{treatment.split()[0].lower()}.png", treatment)
 
     (out / "results.json").write_text(json.dumps(results, indent=2))
     pd.DataFrame(balance_rows_all).to_csv(out / "balance.csv", index=False)

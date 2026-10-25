@@ -1,0 +1,438 @@
+{
+  "run_id": "20261025T145349Z",
+  "dataset_rows": 5517,
+  "treatments": {
+    "Call Center_Yes": {
+      "n": 5517,
+      "n_treated": 2044,
+      "n_control": 3473,
+      "prevalence": 0.37049120899039334,
+      "positivity": {
+        "share_below_0.1": 0.10349827804966467,
+        "share_above_0.9": 0.0,
+        "min": 0.051972668674712764,
+        "max": 0.8892860917816809
+      },
+      "effective_sample_size": 4040.3330750274886,
+      "max_abs_smd_before": 0.8288146840291101,
+      "max_abs_smd_after": 0.053263502557205376,
+      "n_covariates_unbalanced_before": 9,
+      "n_covariates_unbalanced_after": 0,
+      "outcomes": {
+        "churn": {
+          "iptw_ate": {
+            "estimate": -0.09819658923497723,
+            "estimator": "iptw_ate",
+            "n_treated": 2044,
+            "n_control": 3473,
+            "ci": {
+              "point": -0.09819658923497723,
+              "low": -0.12524038541958268,
+              "high": -0.06571306441358866,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": -0.05968688845401174,
+            "estimator": "matched_att",
+            "n_treated": 2044,
+            "n_control": 2044,
+            "ci": {
+              "point": -0.05968688845401174,
+              "low": -0.09344934267643985,
+              "high": -0.029789458081510817,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": true
+        },
+        "monthly_purchase": {
+          "iptw_ate": {
+            "estimate": 7.36983881466351,
+            "estimator": "iptw_ate",
+            "n_treated": 2044,
+            "n_control": 3473,
+            "ci": {
+              "point": 7.36983881466351,
+              "low": 6.781197698008665,
+              "high": 7.9722740172356845,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": 6.534376223091982,
+            "estimator": "matched_att",
+            "n_treated": 2044,
+            "n_control": 2044,
+            "ci": {
+              "point": 6.534376223091982,
+              "low": 3.965527550765807,
+              "high": 8.108420086256542,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": true
+        },
+        "cltv": {
+          "iptw_ate": {
+            "estimate": 20.514853857372145,
+            "estimator": "iptw_ate",
+            "n_treated": 2044,
+            "n_control": 3473,
+            "ci": {
+              "point": 20.514853857372145,
+              "low": -70.63531202995243,
+              "high": 117.7075671603183,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": -1.2637475538167564,
+            "estimator": "matched_att",
+            "n_treated": 2044,
+            "n_control": 2044,
+            "ci": {
+              "point": -1.2637475538167564,
+              "low": -120.9255884937727,
+              "high": 147.28827846902462,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": false
+        }
+      },
+      "balance": [
+        {
+          "covariate": "Tenure Months",
+          "smd_before": 0.8288146840291101,
+          "smd_after": 0.053263502557205376
+        },
+        {
+          "covariate": "Device_Class_Low End",
+          "smd_before": 0.0,
+          "smd_after": 0.0
+        },
+        {
+          "covariate": "Device_Class_Mid End",
+          "smd_before": 0.44857477327381945,
+          "smd_after": 0.015394558399649125
+        },
+        {
+          "covariate": "Payment Method_Debit",
+          "smd_before": 0.2462145900111265,
+          "smd_after": 0.010925684186040202
+        },
+        {
+          "covariate": "Payment Method_Digital Wallet",
+          "smd_before": 0.06410847621635016,
+          "smd_after": -0.008823953055487724
+        },
+        {
+          "covariate": "Payment Method_Pulsa",
+          "smd_before": -0.5280374265852882,
+          "smd_after": -0.008990049054799387
+        },
+        {
+          "covariate": "Games Product_Yes",
+          "smd_before": 0.5792580698741158,
+          "smd_after": 0.01674351093237507
+        },
+        {
+          "covariate": "Music Product_Yes",
+          "smd_before": 0.4004626321521952,
+          "smd_after": 0.027662132850085102
+        },
+        {
+          "covariate": "Education Product_Yes",
+          "smd_before": 0.5001476565013074,
+          "smd_after": 0.04469788657468052
+        },
+        {
+          "covariate": "Video Product_Yes",
+          "smd_before": 0.3391195579332141,
+          "smd_after": 0.02686023311668233
+        },
+        {
+          "covariate": "Use MyApp_Yes",
+          "smd_before": 0.34041080347720365,
+          "smd_after": 0.01899859911786144
+        }
+      ]
+    },
+    "Video Product_Yes": {
+      "n": 5517,
+      "n_treated": 2707,
+      "n_control": 2810,
+      "prevalence": 0.4906652166032264,
+      "positivity": {
+        "share_below_0.1": 0.0,
+        "share_above_0.9": 0.0,
+        "min": 0.1100676892553906,
+        "max": 0.8804501239357663
+      },
+      "effective_sample_size": 3985.2839335320577,
+      "max_abs_smd_before": 0.9655102484293298,
+      "max_abs_smd_after": 0.027141764876734288,
+      "n_covariates_unbalanced_before": 5,
+      "n_covariates_unbalanced_after": 0,
+      "outcomes": {
+        "churn": {
+          "iptw_ate": {
+            "estimate": 0.027873545942411815,
+            "estimator": "iptw_ate",
+            "n_treated": 2707,
+            "n_control": 2810,
+            "ci": {
+              "point": 0.027873545942411815,
+              "low": 0.0008801847588147676,
+              "high": 0.051779646476867044,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": 0.04580716660509787,
+            "estimator": "matched_att",
+            "n_treated": 2707,
+            "n_control": 2707,
+            "ci": {
+              "point": 0.04580716660509787,
+              "low": 0.0033063320701881573,
+              "high": 0.08591426503487301,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": true
+        },
+        "monthly_purchase": {
+          "iptw_ate": {
+            "estimate": 14.693968417694407,
+            "estimator": "iptw_ate",
+            "n_treated": 2707,
+            "n_control": 2810,
+            "ci": {
+              "point": 14.693968417694407,
+              "low": 13.96976728556696,
+              "high": 15.522839683499527,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": 12.704270410048025,
+            "estimator": "matched_att",
+            "n_treated": 2707,
+            "n_control": 2707,
+            "ci": {
+              "point": 12.704270410048025,
+              "low": 11.74049574369096,
+              "high": 14.94873704242953,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": true
+        },
+        "cltv": {
+          "iptw_ate": {
+            "estimate": -55.23561383156539,
+            "estimator": "iptw_ate",
+            "n_treated": 2707,
+            "n_control": 2810,
+            "ci": {
+              "point": -55.23561383156539,
+              "low": -139.066840523935,
+              "high": 30.163800391593806,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": 17.3149242704103,
+            "estimator": "matched_att",
+            "n_treated": 2707,
+            "n_control": 2707,
+            "ci": {
+              "point": 17.3149242704103,
+              "low": -199.6682531595708,
+              "high": 119.01775946419973,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": false
+        }
+      },
+      "balance": [
+        {
+          "covariate": "Tenure Months",
+          "smd_before": 0.6914604307918706,
+          "smd_after": 0.02400495486825559
+        },
+        {
+          "covariate": "Device_Class_Low End",
+          "smd_before": 0.0,
+          "smd_after": 0.0
+        },
+        {
+          "covariate": "Device_Class_Mid End",
+          "smd_before": -0.34245845122938634,
+          "smd_after": -0.011809445724422286
+        },
+        {
+          "covariate": "Payment Method_Debit",
+          "smd_before": 0.11274022778023828,
+          "smd_after": 0.018520860825106338
+        },
+        {
+          "covariate": "Payment Method_Digital Wallet",
+          "smd_before": -0.33233124338378556,
+          "smd_after": -0.027141764876734288
+        },
+        {
+          "covariate": "Payment Method_Pulsa",
+          "smd_before": 0.06267548421057469,
+          "smd_after": -0.0038722674686643968
+        },
+        {
+          "covariate": "Use MyApp_Yes",
+          "smd_before": 0.9655102484293298,
+          "smd_after": 0.010475111365829074
+        }
+      ]
+    },
+    "Use MyApp_Yes": {
+      "n": 5517,
+      "n_treated": 2732,
+      "n_control": 2785,
+      "prevalence": 0.49519666485408737,
+      "positivity": {
+        "share_below_0.1": 0.0,
+        "share_above_0.9": 0.0,
+        "min": 0.14573580750491813,
+        "max": 0.8412537667462544
+      },
+      "effective_sample_size": 4586.2112844546755,
+      "max_abs_smd_before": 0.7111685692287801,
+      "max_abs_smd_after": 0.007816569554402207,
+      "n_covariates_unbalanced_before": 4,
+      "n_covariates_unbalanced_after": 0,
+      "outcomes": {
+        "churn": {
+          "iptw_ate": {
+            "estimate": 0.04074010437201736,
+            "estimator": "iptw_ate",
+            "n_treated": 2732,
+            "n_control": 2785,
+            "ci": {
+              "point": 0.04074010437201736,
+              "low": 0.0156830252948783,
+              "high": 0.061064110419165776,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": -0.03843338213762809,
+            "estimator": "matched_att",
+            "n_treated": 2732,
+            "n_control": 2732,
+            "ci": {
+              "point": -0.03843338213762809,
+              "low": -0.0051777951554349815,
+              "high": 0.0796644854243887,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": false
+        },
+        "monthly_purchase": {
+          "iptw_ate": {
+            "estimate": 18.730374385863612,
+            "estimator": "iptw_ate",
+            "n_treated": 2732,
+            "n_control": 2785,
+            "ci": {
+              "point": 18.730374385863612,
+              "low": 17.87898734499022,
+              "high": 19.455709762356776,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": 17.109965226939963,
+            "estimator": "matched_att",
+            "n_treated": 2732,
+            "n_control": 2732,
+            "ci": {
+              "point": 17.109965226939963,
+              "low": 16.50149460231393,
+              "high": 19.859473726331103,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": true
+        },
+        "cltv": {
+          "iptw_ate": {
+            "estimate": -30.932872024879543,
+            "estimator": "iptw_ate",
+            "n_treated": 2732,
+            "n_control": 2785,
+            "ci": {
+              "point": -30.932872024879543,
+              "low": -115.73679277367312,
+              "high": 50.33792073995218,
+              "n_boot": 300
+            }
+          },
+          "matched_att": {
+            "estimate": -116.96954612005811,
+            "estimator": "matched_att",
+            "n_treated": 2732,
+            "n_control": 2732,
+            "ci": {
+              "point": -116.96954612005811,
+              "low": -152.35739061608513,
+              "high": 167.3333441710231,
+              "n_boot": 300
+            }
+          },
+          "estimators_agree_in_sign": true
+        }
+      },
+      "balance": [
+        {
+          "covariate": "Tenure Months",
+          "smd_before": 0.7111685692287801,
+          "smd_after": 0.007816569554402207
+        },
+        {
+          "covariate": "Device_Class_Low End",
+          "smd_before": 0.0,
+          "smd_after": 0.0
+        },
+        {
+          "covariate": "Device_Class_Mid End",
+          "smd_before": -0.32246331419119734,
+          "smd_after": 0.004381360781674088
+        },
+        {
+          "covariate": "Payment Method_Debit",
+          "smd_before": 0.11891884949557512,
+          "smd_after": -0.0013479761825366064
+        },
+        {
+          "covariate": "Payment Method_Digital Wallet",
+          "smd_before": -0.33789149969881715,
+          "smd_after": -0.003484658712638873
+        },
+        {
+          "covariate": "Payment Method_Pulsa",
+          "smd_before": 0.04469162698524635,
+          "smd_after": -0.0007027338124678654
+        }
+      ]
+    }
+  },
+  "method": {
+    "propensity_model": "logistic regression, C=1e6, no regularisation",
+    "iptw": "stabilised weights P(T=t)/P(T=t|X); ATE = weighted mean difference",
+    "matching": "1-nearest-neighbour on logit(propensity), with replacement; ATT",
+    "intervals": "percentile bootstrap, 300 resamples, propensity refit in each"
+  }
+}
