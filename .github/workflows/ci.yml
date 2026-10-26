@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  causal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: |
+          python -m pip install --quiet --upgrade pip
+          python -m pip install --quiet pandas scikit-learn numpy scipy matplotlib openpyxl pytest
+
+      - name: Unit tests
+        run: python -m pytest causal/tests -q
+
+      - name: Smoke run on the committed dataset
+        run: python causal/run.py --n-boot 10 --out-dir /tmp/causal-out
+
+      - name: Assert the run is complete and balanced
+        run: |
+          python - <<'PY'
+          import glob, json
+          path = sorted(glob.glob("/tmp/causal-out/*/results.json"))[-1]
+          r = json.load(open(path))
+          assert len(r["treatments"]) == 3, list(r["treatments"])
+          for name, block in r["treatments"].items():
+              assert len(block["outcomes"]) == 3, (name, block["outcomes"].keys())
+              # weighting must actually balance the covariates it claims to balance
+              assert block["max_abs_smd_after"] < 0.1, (name, block["max_abs_smd_after"])
+              assert block["effective_sample_size"] > 0
+              for outcome, values in block["outcomes"].items():
+                  low, high = values["iptw_ate"]["ci"]["low"], values["iptw_ate"]["ci"]["high"]
+                  assert low <= high, (name, outcome, low, high)
+          print("treatments", list(r["treatments"]))
+          print("rows", r["dataset_rows"])
+          PY

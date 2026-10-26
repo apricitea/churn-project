@@ -69,10 +69,17 @@ of 5,517. Full tables, per-covariate SMDs and Love plots are in `causal/out/<run
 ## Reproduce
 
 ```bash
-uv venv .venv && VIRTUAL_ENV=.venv uv pip install pandas scikit-learn matplotlib openpyxl
-.venv/bin/python causal/run.py --n-boot 60        # ~1 minute; raise n-boot for tighter intervals
+uv venv .venv && VIRTUAL_ENV=.venv uv pip install pandas scikit-learn matplotlib openpyxl pytest
+.venv/bin/python -m pytest causal/tests -q         # 7 tests against synthetic data
+.venv/bin/python causal/run.py --n-boot 300        # committed run used 300 resamples
 streamlit run "Telco Churn Solutions/Home.py"
 ```
+
+The tests check properties rather than snapshots: IPTW recovers a known ATE of 2.0 where the
+naive difference is inflated by confounding, weighting drives the SMD it targets to zero,
+stabilised weights equal 1 when the propensity model knows only the prevalence, and ESS
+behaves at both extremes. CI runs them and then a smoke run that asserts the weighting
+actually balanced every treatment (max |SMD| < 0.1) before the build goes green.
 
 ## Limitations
 
